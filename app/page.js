@@ -1,113 +1,311 @@
-import Image from 'next/image'
+"use client";
+import { useEffect } from "react";
+import Image from "next/image";
+import Typed from "typed.js";
 
 export default function Home() {
+  useEffect(() => {
+    const github = document.getElementById("github");
+    const clickme = document.getElementById("clickme");
+    const youtube = document.getElementById("youtube");
+    let presses = 0;
+    // Event listener for button click
+    clickme.addEventListener("click", function () {
+      // Increment the number of button presses
+      presses += 1;
+
+      // Update the button text with the current number of presses
+      clickme.innerText = `You've pressed this button ${presses} times. (Get to 99!)`;
+
+      if (presses === 99) {
+        // Secret mode unlocked
+        clickme.innerText = `Woah! You've unlocked the secret mode. Press again!`;
+      }
+
+      if (presses === 100) {
+        // Change background on the 100th press
+        document.body.style.backgroundImage =
+          "linear-gradient(to right, #FF0000, #0000FF)";
+        clickme.innerText =
+          "You've pressed the button 100 times! Press again to revert the change";
+      }
+
+      if (presses === 101) {
+        clickme.innerText = "Hmm wait, that didn't work? Try again?";
+      }
+
+      if (presses === 102) {
+        clickme.innerText = "Uh oh...What's happening?";
+        presses += 0;
+        clickme.style.display = "none";
+
+        // Create and style the hacked message
+        const hacked = document.createElement("div");
+        hacked.style.backgroundColor = "#000000";
+        hacked.style.color = "green";
+        hacked.style.bottom = "10px";
+        hacked.id = "hacked";
+        hacked.style.fontFamily =
+          "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace";
+        hacked.style.position = "fixed";
+        hacked.style.top = "50%";
+        hacked.style.left = "50%";
+        hacked.style.transform = "translate(-50%, -50%)";
+        hacked.style.filter = "none";
+        hacked.style.zIndex = "10";
+        hacked.style.width = "800px";
+        hacked.style.textAlign = "center";
+
+        // Append the hacked message to the body
+        document.body.appendChild(hacked);
+
+        // Initialize Typed.js for typed effect
+        const typedBegin = new Typed("#hacked", {
+          strings: [
+            "I am the hacker! I have removed the color! Fight back if you can :)",
+            "<span style='color: red'>This may trigger epilepsy! Please reload if you encounter any symptoms</span>",
+            "Type $start to begin your journey",
+          ],
+          typeSpeed: 50,
+        });
+
+        // Set the background to binary pattern
+        document.body.style.backgroundColor = "#000000";
+        function generateBinaryBackground() {
+          const binaryPattern = generateBinaryPattern(); // Generate a binary pattern
+          const bodyElement = document.body;
+          bodyElement.style.backgroundImage = `url(${binaryPattern})`;
+        }
+
+        function generateBinaryPattern() {
+          const binaryWidth = 10; // Width of each binary digit
+          const binaryHeight = 10; // Height of each binary digit
+          const numRows = Math.ceil(window.innerHeight / binaryHeight); // Number of rows based on window height
+          const numCols = Math.ceil(window.innerWidth / binaryWidth); // Number of columns based on window width
+
+          const canvas = document.createElement("canvas");
+          canvas.width = numCols * binaryWidth;
+          canvas.height = numRows * binaryHeight;
+          const context = canvas.getContext("2d");
+
+          // Generate binary pattern
+          for (let row = 0; row < numRows; row++) {
+            for (let col = 0; col < numCols; col++) {
+              const binaryValue = Math.round(Math.random()); // Generate random binary value (0 or 1)
+              const x = col * binaryWidth;
+              const y = row * binaryHeight;
+              context.fillStyle = binaryValue === 0 ? "#000" : "#FFF"; // Set color based on binary value
+              context.fillRect(x, y, binaryWidth, binaryHeight);
+            }
+          }
+
+          return canvas.toDataURL(); // Convert canvas to base64-encoded image URL
+        }
+        generateBinaryBackground();
+
+        // Create and style the input element
+        const input = document.createElement("input");
+        input.style.position = "fixed";
+        input.style.top = "calc(50% + 100px)";
+        input.style.left = "50%";
+        input.style.transform = "translateX(-50%)";
+        input.style.borderColor = "#FFFFFF";
+        input.style.backgroundColor = "#FFFFFF";
+        input.id = "input";
+        input.style.zIndex = "10";
+
+        // Event listener for Enter key press
+        input.addEventListener("keypress", function (event) {
+          let solvedQuestion1 = false;
+          let solvedQuestion2 = false;
+          let solvedQuestion3 = false;
+          if (event.key === "Enter") {
+            if (input.value === "$start") {
+              if (solvedQuestion1 === true) {
+                hacked.textContent = "You've already started the game.";
+              }
+              const findTheButton = document.createElement("button");
+              const typedQuestion2 = new Typed("#hacked", {
+                strings: [
+                  "Loading the server...",
+                  "Loading... 10%",
+                  "Loading... 20%",
+                  "Loading... 30%",
+                  "Loading... 40%",
+                  "Loading... 50%",
+                  "Loading... 60%",
+                  "Loading... 70%",
+                  "Loading... 80%",
+                  "Loading... 90%",
+                  "Loading... 100%",
+                  "Loaded the game. Welcome :)",
+                  "Your first challenge? Find the button. Enjoy :)",
+                ],
+                typeSpeed: 50,
+                loop: false,
+                onComplete: function () {
+                  document.body.appendChild(findTheButton);
+                  findTheButton.style.zIndex = "9999";
+                  findTheButton.style.backgroundColor = "yellow";
+                  findTheButton.style.opacity = "0.5";
+                  findTheButton.style.position = "absolute";
+                  findTheButton.style.height = `${Math.floor(
+                    Math.random() * 100
+                  )}px`;
+                  findTheButton.style.width = `${Math.floor(
+                    Math.random() * 100
+                  )}px`;
+                  findTheButton.style.top = `${Math.floor(
+                    Math.random() * 100
+                  )}px`;
+                  findTheButton.style.left = `${Math.floor(
+                    Math.random() * 100
+                  )}px`;
+                  findTheButton.innerText = ".";
+                  document.body.style.filter = "blur(5px)";
+                },
+              });
+              input.value = "";
+              solvedQuestion1 = true;
+              findTheButton.addEventListener("click", function () {
+                document.body.style.filter = "none";
+                findTheButton.remove();
+                const typedQuestion2 = new Typed("#hacked", {
+                  strings: ["Well done, what is 50 + 16?"],
+                });
+              });
+            } else if (input.value === "66") {
+              if (solvedQuestion2 === true) {
+                hacked.textContent = "You've already solved question 2!";
+              }
+              const typedQuestion2 = new Typed("#hacked", {
+                strings: [
+                  "Well done, I expect nothing more than a genius. But now, let's stop playing around, shall we?",
+                  "<span style='color: red'>This may trigger epilepsy! Please reload if you encounter any symptoms</span>",
+                  "Decode the following text from binary to base-10: 01010010 01000111 01000010 00100000 01110011 01110100 01100001 01101110 01100100 01110011 00100000 01100110 01101111 01110010 00100000 01110010 01100101 01100100 00101100 00100000 01100111 01110010 01100101 01100101 01100101 01101110 00100000 01100001 01101110 01100100 00100000 01100010 01101100 01110101 01100101 00100000 01110010 01101001 01100111 01101000 01110100 00111111 00100000 01000001 01101110 01111001 01110111 01100001 01111001 01110011 00101100 00100000 00110110 00110110 00100000 01110100 01101000 01110010 01100101 01100101 00100000 01110100 01101001 01101101 01100101 01110011 00100000 01110011 01110011 01101000 01101111 01110101 01101100 01100100 01100100 00100000 01100100 01101111 00100000 01110100 01101000 01100101 00100000 01101010 01101111 01100010 ",
+                ],
+              });
+
+              input.value = "";
+              solvedQuestion2 = true;
+            } else if (
+              input.value ===
+              "RGB stands for red, green and blue right? Anyways, 66 three times should do the job"
+            ) {
+              const typedQuestion3 = new Typed("#hacked", {
+                strings: [
+                  "Very impressive, But now prepare to be infected!",
+                  "<span style='color: red'>This may trigger epilepsy! Please reload if you encounter any symptoms</span>",
+                  "My goons will attack you. You have 100 health. Type $regen to regenerate your health. Survive for 5 minutes. This is the final level, You'll escape if you're smart enough.",
+                ],
+                onComplete: function () {
+                  let health = 100;
+                  hacked.textContent = `Current health: ${health}`;
+                  if (input.value === "$regen") {
+                    if (health != 100) {
+                      health += 5;
+                      hacked.textContent = `Current health: ${health}`;
+                    } else return;
+                  }
+                  const intervalId = setInterval(() => {
+                    health -= 5;
+                    hacked.textContent = `Current health: ${health}`;
+                    if (health <= 0) {
+                      const YouPassed = new Typed("#hacked", {
+                        strings: [
+                          "Congrats. You're one smart person! You have passed the test and shall now get back your prized possession!",
+                        ],
+                        onComplete: function reload() {
+                          window.location.reload();
+                        },
+                      });
+                      clearInterval(intervalId);
+                    }
+                  }, 5000); // 5000 milliseconds = 5 seconds
+                },
+              });
+            }
+          }
+        });
+
+        // Append the input element to the body
+        document.body.appendChild(input);
+      }
+    });
+    /*
+      let fileInput = document.createElement("input");
+      fileInput.type = "file";
+      fileInput.style.display = "none";
+      fileInput.accept = "audio/*"
+
+      fileInput.addEventListener("change", function (event) {
+        let selectedFile = event.target.files[0];
+        let fileURL = URL.createObjectURL(selectedFile);
+        let sound = new Howl({
+          src: [fileURL],
+          html5: true
+        });
+        
+        sound.play();
+      });
+
+      document.body.appendChild(fileInput);
+      fileInput.click();
+      */
+
+    github.addEventListener("click", function () {
+      window.open("https://github.com/SyntaxErrorSolos");
+    });
+    youtube.addEventListener("click", function () {
+      window.open("https://youtube.com/@AbacusOnYouTube");
+    });
+
+    return () => {};
+  }, []);
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div>
+      <div className="flex flex-col h-screen">
+        <div className="flex-grow flex flex-col justify-center items-center">
+          <h1 className="text-6xl font-bold text-[#CCCCCC] text-center mb-4">
+            Abacus
+          </h1>
+          <p className="text-[#CCCCCC] text-2xl font-semibold text-center mb-4">
+            A backend and frontend developer from Pakistan
+          </p>
+          <div className="flex justify-center space-x-4">
+            <div>
+              <Image
+                src="/Github.svg"
+                alt="My Github"
+                className="cursor-pointer w-16 h-16"
+                id="github"
+                width={80}
+                height={80}
+                priority
+              />
+            </div>
+            <div>
+              <Image
+                src="/Youtube.svg"
+                alt="My YouTube"
+                className="cursor-pointer w-16 h-16"
+                id="youtube"
+                width={80}
+                height={80}
+                priority
+              />
+            </div>
+          </div>
+        </div>
+        <div className="absolute bottom-10 right-10">
+          <button
+            className="bg-[#CCCCCC] rounded-lg py-2 px-5 font-mono hover:bg-black hover:text-white transition-all"
+            id="clickme"
           >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+            Click Me
+          </button>
         </div>
       </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+    </div>
+  );
 }
