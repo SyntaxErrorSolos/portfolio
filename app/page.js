@@ -119,10 +119,14 @@ export default function Home() {
           let solvedQuestion1 = false;
           let solvedQuestion2 = false;
           let solvedQuestion3 = false;
+          let solvedQuestion4 = false;
           if (event.key === "Enter") {
             if (input.value === "$start") {
               if (solvedQuestion1 === true) {
                 hacked.textContent = "You've already started the game.";
+              }
+              if(solvedQuestion2 && solvedQuestion3 && solvedQuestion4 === true) {
+                return;
               }
               const findTheButton = document.createElement("button");
               const typedQuestion2 = new Typed("#hacked", {
@@ -178,11 +182,14 @@ export default function Home() {
               if (solvedQuestion2 === true) {
                 hacked.textContent = "You've already solved question 2!";
               }
+              if(solvedQuestion1 && solvedQuestion3 && solvedQuestion4 === true) {
+                return;
+              }
               const typedQuestion2 = new Typed("#hacked", {
                 strings: [
                   "Well done, I expect nothing more than a genius. But now, let's stop playing around, shall we?",
                   "<span style='color: red'>This may trigger epilepsy! Please reload if you encounter any symptoms</span>",
-                  "Decode the following text from binary to base-10: 01010010 01000111 01000010 00100000 01110011 01110100 01100001 01101110 01100100 01110011 00100000 01100110 01101111 01110010 00100000 01110010 01100101 01100100 00101100 00100000 01100111 01110010 01100101 01100101 01100101 01101110 00100000 01100001 01101110 01100100 00100000 01100010 01101100 01110101 01100101 00100000 01110010 01101001 01100111 01101000 01110100 00111111 00100000 01000001 01101110 01111001 01110111 01100001 01111001 01110011 00101100 00100000 00110110 00110110 00100000 01110100 01101000 01110010 01100101 01100101 00100000 01110100 01101001 01101101 01100101 01110011 00100000 01110011 01110011 01101000 01101111 01110101 01101100 01100100 01100100 00100000 01100100 01101111 00100000 01110100 01101000 01100101 00100000 01101010 01101111 01100010 ",
+                  "Decode the following text from binary to ASCII: 01010010 01000111 01000010 00100000 01110011 01110100 01100001 01101110 01100100 01110011 00100000 01100110 01101111 01110010 00100000 01110010 01100101 01100100 00101100 00100000 01100111 01110010 01100101 01100101 01100101 01101110 00100000 01100001 01101110 01100100 00100000 01100010 01101100 01110101 01100101 00100000 01110010 01101001 01100111 01101000 01110100 00111111 00100000 01000001 01101110 01111001 01110111 01100001 01111001 01110011 00101100 00100000 00110110 00110110 00100000 01110100 01101000 01110010 01100101 01100101 00100000 01110100 01101001 01101101 01100101 01110011 00100000 01110011 01110011 01101000 01101111 01110101 01101100 01100100 01100100 00100000 01100100 01101111 00100000 01110100 01101000 01100101 00100000 01101010 01101111 01100010 ",
                 ],
               });
 
@@ -192,11 +199,15 @@ export default function Home() {
               input.value ===
               "RGB stands for red, green and blue right? Anyways, 66 three times should do the job"
             ) {
+              let solvedQuestion3 = true;
+              if(solvedQuestion1 && solvedQuestion2 && solvedQuestion4 === true) {
+                return;
+              }
               const typedQuestion3 = new Typed("#hacked", {
                 strings: [
                   "Very impressive, But now prepare to be infected!",
                   "<span style='color: red'>This may trigger epilepsy! Please reload if you encounter any symptoms</span>",
-                  "My goons will attack you. You have 100 health. Type $regen to regenerate your health. Survive for 5 minutes. This is the final level, You'll escape if you're smart enough.",
+                  "My goons will attack you. You have 100 health. Type $regen to regenerate your health. Survive for 5 minutes. You'll escape if you're smart enough.",
                 ],
                 onComplete: function () {
                   let health = 100;
@@ -213,10 +224,13 @@ export default function Home() {
                     if (health <= 0) {
                       const YouPassed = new Typed("#hacked", {
                         strings: [
-                          "Congrats. You're one smart person! You have passed the test and shall now get back your prized possession!",
+                          "Congrats. Time for the final test.",
+                          "Fill in the blanks to recover your color: rgb(x, x, x)",
+                          "Answer like this: 12, 12, 12",
+                          "rgb(x, x, x)",
                         ],
                         onComplete: function reload() {
-                          window.location.reload();
+                          solvedQuestion3 = true;
                         },
                       });
                       clearInterval(intervalId);
@@ -224,6 +238,20 @@ export default function Home() {
                   }, 5000); // 5000 milliseconds = 5 seconds
                 },
               });
+            } else if (input === "66, 66, 66") {
+              let solvedQuestion4 = true;
+              if(solvedQuestion4 === true) return;
+              if(solvedQuestion1 && solvedQuestion3 && solvedQuestion2 === true) {
+                return;
+              }
+              const typedQuestion4 = new Typed("#hacked", {
+                strings: [
+                  "Well done. Enjoy your colors."
+                ],
+                onComplete: function() {
+                  window.location.reload()
+                }
+              })
             }
           }
         });
